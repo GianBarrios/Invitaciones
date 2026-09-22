@@ -335,6 +335,78 @@
   }
   .map-btn:hover{ background:var(--apple-dark); }
 
+  /* ---------- 2. FOREST LIFE (birds + deer) ---------- */
+  .forest-anim{
+    background:linear-gradient(180deg,#dff3e0 0%, #bfe3c4 45%, #9fcf9f 100%);
+  }
+  .fa-sky{
+    position:absolute; inset:0;
+    background:radial-gradient(circle at 78% 10%, rgba(255,250,222,.65), rgba(255,250,222,0) 42%);
+  }
+  .fa-treerow{
+    position:absolute; left:0; right:0; bottom:14%;
+    display:flex; justify-content:space-between; align-items:flex-end;
+    padding:0 2%;
+    opacity:.9;
+  }
+  .fa-treerow svg{ width:12%; min-width:64px; }
+  .fa-trunk{ fill:#6b4226; }
+  .fa-foliage{ fill:var(--forest-light); }
+  .fa-ground{
+    position:absolute; bottom:0; left:0; right:0; height:16%;
+    background:linear-gradient(#5f9153, #3e6e3f);
+  }
+  .bird-fly{
+    position:absolute; left:0; width:44px;
+    animation-name:flyAcross; animation-timing-function:linear; animation-iteration-count:infinite;
+  }
+  .bird-fly svg{
+    width:100%; display:block;
+    animation:flap .38s ease-in-out infinite;
+    transform-origin:50% 50%;
+  }
+  @keyframes flyAcross{
+    from{ transform:translateX(-15vw) translateY(0); }
+    to{ transform:translateX(115vw) translateY(-38px); }
+  }
+  @keyframes flap{
+    0%,100%{ transform:scaleY(1); }
+    50%{ transform:scaleY(.4); }
+  }
+  .deer-track{
+    position:absolute; bottom:15%; left:0; width:100px;
+    animation-name:trotAcross; animation-timing-function:linear; animation-iteration-count:infinite;
+  }
+  .deer-track.fawn{ bottom:14.5%; width:74px; }
+  @keyframes trotAcross{
+    from{ transform:translateX(-25vw); }
+    to{ transform:translateX(125vw); }
+  }
+  .deer-bounce{
+    display:block;
+    animation:trotBounce .45s ease-in-out infinite;
+  }
+  @keyframes trotBounce{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-5px); }
+  }
+  .legA, .legB{
+    transform-box: fill-box;
+    transform-origin:50% 0%;
+  }
+  .legA{ animation:legSwingA .45s ease-in-out infinite; }
+  .legB{ animation:legSwingB .45s ease-in-out infinite; }
+  @keyframes legSwingA{ 0%,100%{ transform:rotate(12deg); } 50%{ transform:rotate(-12deg); } }
+  @keyframes legSwingB{ 0%,100%{ transform:rotate(-12deg); } 50%{ transform:rotate(12deg); } }
+  .fa-caption{
+    position:relative; z-index:2; margin-top:auto;
+    font-family:'Playfair Display',serif; font-style:italic;
+    color:var(--forest-deep); font-size:1.05rem;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bird-fly, .bird-fly svg, .deer-track, .deer-bounce, .legA, .legB{ animation:none !important; }
+  }
+
   /* ---------- 6. CLOSING ---------- */
   .closing{
     background:linear-gradient(180deg, var(--night) 0%, #16264a 60%, var(--forest-deep) 100%);
@@ -424,7 +496,63 @@
   </svg>
 </section>
 
-<!-- ============ 2. ERASE UNA VEZ ============ -->
+<!-- ============ 2. FOREST LIFE (birds + deer) ============ -->
+<section class="forest-anim">
+  <div class="fa-sky"></div>
+  <div class="fa-treerow" aria-hidden="true">
+    <svg viewBox="0 0 60 90"><rect class="fa-trunk" x="26" y="46" width="8" height="44"/><circle class="fa-foliage" cx="30" cy="34" r="34"/></svg>
+    <svg viewBox="0 0 60 90"><rect class="fa-trunk" x="26" y="50" width="8" height="40"/><circle class="fa-foliage" cx="30" cy="38" r="30"/></svg>
+    <svg viewBox="0 0 60 90"><rect class="fa-trunk" x="26" y="42" width="8" height="48"/><circle class="fa-foliage" cx="30" cy="30" r="38"/></svg>
+    <svg viewBox="0 0 60 90"><rect class="fa-trunk" x="26" y="50" width="8" height="40"/><circle class="fa-foliage" cx="30" cy="38" r="30"/></svg>
+    <svg viewBox="0 0 60 90"><rect class="fa-trunk" x="26" y="46" width="8" height="44"/><circle class="fa-foliage" cx="30" cy="34" r="34"/></svg>
+  </div>
+
+  <span class="bird-fly" style="top:12%; animation-duration:11s; animation-delay:0s;">
+    <svg viewBox="0 0 40 20"><path d="M2 14C8 4 14 4 20 10C26 4 32 4 38 14" stroke="#2b3a55" stroke-width="3.4" fill="none" stroke-linecap="round"/></svg>
+  </span>
+  <span class="bird-fly" style="top:20%; animation-duration:8.5s; animation-delay:1.4s;">
+    <svg viewBox="0 0 40 20"><path d="M2 14C8 4 14 4 20 10C26 4 32 4 38 14" stroke="#3f5678" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  </span>
+  <span class="bird-fly" style="top:8%; animation-duration:13s; animation-delay:3.2s;">
+    <svg viewBox="0 0 40 20"><path d="M2 14C8 4 14 4 20 10C26 4 32 4 38 14" stroke="#2b3a55" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  </span>
+  <span class="bird-fly" style="top:26%; animation-duration:9.5s; animation-delay:5s;">
+    <svg viewBox="0 0 40 20"><path d="M2 14C8 4 14 4 20 10C26 4 32 4 38 14" stroke="#4a6284" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>
+  </span>
+
+  <div class="fa-ground"></div>
+
+  <div class="deer-track" style="animation-duration:13s; animation-delay:.4s;">
+    <svg class="deer-bounce" viewBox="0 0 120 80">
+      <ellipse cx="58" cy="42" rx="30" ry="16" fill="#a9713c"/>
+      <circle cx="92" cy="24" r="12" fill="#a9713c"/>
+      <path d="M88 14c-2-6 2-10 6-10" stroke="#7a4b23" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M96 14c2-6 6-8 9-6" stroke="#7a4b23" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <ellipse cx="99" cy="26" rx="4" ry="6" fill="#8a5a2c"/>
+      <ellipse cx="26" cy="36" rx="8" ry="5" fill="#8a5a2c"/>
+      <circle cx="97" cy="22" r="1.6" fill="#241407"/>
+      <g class="legA"><rect x="42" y="46" width="7" height="28" rx="3" fill="#7a4b23"/><rect x="80" y="46" width="7" height="28" rx="3" fill="#7a4b23"/></g>
+      <g class="legB"><rect x="56" y="46" width="7" height="28" rx="3" fill="#5c3a1a"/><rect x="94" y="46" width="7" height="28" rx="3" fill="#5c3a1a"/></g>
+    </svg>
+  </div>
+
+  <div class="deer-track fawn" style="animation-duration:15.5s; animation-delay:2.6s;">
+    <svg class="deer-bounce" viewBox="0 0 120 80">
+      <ellipse cx="58" cy="46" rx="22" ry="12" fill="#c98a3d"/>
+      <circle cx="86" cy="30" r="9" fill="#c98a3d"/>
+      <ellipse cx="70" cy="40" rx="3" ry="2.4" fill="#f8ecd2"/>
+      <ellipse cx="50" cy="42" rx="3" ry="2.4" fill="#f8ecd2"/>
+      <ellipse cx="20" cy="42" rx="6" ry="4" fill="#a9713c"/>
+      <circle cx="90" cy="28" r="1.4" fill="#241407"/>
+      <g class="legA"><rect x="36" y="50" width="5" height="20" rx="2.5" fill="#8a5a2c"/><rect x="70" y="50" width="5" height="20" rx="2.5" fill="#8a5a2c"/></g>
+      <g class="legB"><rect x="48" y="50" width="5" height="20" rx="2.5" fill="#6b4226"/><rect x="82" y="50" width="5" height="20" rx="2.5" fill="#6b4226"/></g>
+    </svg>
+  </div>
+
+  <p class="fa-caption">En el corazón del bosque, la vida sigue su curso&hellip;</p>
+</section>
+
+<!-- ============ 3. ERASE UNA VEZ ============ -->
 <section class="tale">
   <svg class="butterfly" style="top:14%;left:14%;" viewBox="0 0 40 30">
     <path d="M20 15c-4-10-16-10-18-2 6 2 14 2 18 2z" fill="#3f6fb0"/>
@@ -439,7 +567,7 @@
   <p class="tale-quote">&hellip;una pequeña princesa que llegó para llenar nuestra casa de brillo, ternura y risas. Hoy queremos celebrar junto a ti otro capítulo de su historia.</p>
 </section>
 
-<!-- ============ 3. MIRROR / PHOTO ============ -->
+<!-- ============ 4. MIRROR / PHOTO ============ -->
 <section class="mirror-scene">
   <div class="cloud" style="width:100px;height:28px;top:6%;left:10%;"></div>
   <div class="cloud" style="width:80px;height:24px;top:10%;right:8%;"></div>
@@ -468,7 +596,7 @@
   </div>
 </section>
 
-<!-- ============ 4. DETAILS ============ -->
+<!-- ============ 5. DETAILS ============ -->
 <section class="details">
   <h2>Los detalles del cuento</h2>
   <p class="sub script">Te esperamos</p>
@@ -498,7 +626,7 @@
   </a>
 </section>
 
-<!-- ============ 5. CLOSING ============ -->
+<!-- ============ 6. CLOSING ============ -->
 <section class="closing">
   <p class="script">Y vivieron felices para siempre&hellip;</p>
   <p>Gracias por ser parte de la historia de Darlin. ¡Te esperamos para celebrar juntos este día tan especial!</p>
