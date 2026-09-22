@@ -357,54 +357,59 @@
     background:linear-gradient(#5f9153, #3e6e3f);
   }
   .bird-fly{
-    position:absolute; left:0; width:44px;
+    position:absolute; left:0; width:52px;
     animation-name:flyAcross; animation-timing-function:linear; animation-iteration-count:infinite;
   }
-  .bird-fly svg{
+  .bird-svg{
     width:100%; display:block;
-    animation:flap .38s ease-in-out infinite;
+    animation:birdBob .5s ease-in-out infinite;
     transform-origin:50% 50%;
   }
   @keyframes flyAcross{
     from{ transform:translateX(-15vw) translateY(0); }
-    to{ transform:translateX(115vw) translateY(-38px); }
+    to{ transform:translateX(115vw) translateY(-40px); }
   }
-  @keyframes flap{
-    0%,100%{ transform:scaleY(1); }
-    50%{ transform:scaleY(.4); }
+  @keyframes birdBob{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-3px); }
   }
+  /* two-frame wing flap: the up/down poses cross-fade on a shared clock */
+  .wing{ transform-box: fill-box; transform-origin:80% 50%; }
+  .wing-up{ animation:frameA .5s steps(1,end) infinite; }
+  .wing-down{ animation:frameB .5s steps(1,end) infinite; }
+  @keyframes frameA{ 0%,49%{ opacity:1; } 50%,100%{ opacity:0; } }
+  @keyframes frameB{ 0%,49%{ opacity:0; } 50%,100%{ opacity:1; } }
+
   .deer-track{
-    position:absolute; bottom:15%; left:0; width:100px;
+    position:absolute; bottom:15%; left:0; width:130px;
     animation-name:trotAcross; animation-timing-function:linear; animation-iteration-count:infinite;
   }
-  .deer-track.fawn{ bottom:14.5%; width:74px; }
+  .deer-track.fawn{ bottom:14.5%; width:96px; }
   @keyframes trotAcross{
     from{ transform:translateX(-25vw); }
     to{ transform:translateX(125vw); }
   }
-  .deer-bounce{
+  .deer-svg{
     display:block;
-    animation:trotBounce .45s ease-in-out infinite;
+    animation:trotBounce .42s ease-in-out infinite;
   }
   @keyframes trotBounce{
     0%,100%{ transform:translateY(0); }
-    50%{ transform:translateY(-5px); }
+    50%{ transform:translateY(-4px); }
   }
-  .legA, .legB{
-    transform-box: fill-box;
-    transform-origin:50% 0%;
-  }
-  .legA{ animation:legSwingA .45s ease-in-out infinite; }
-  .legB{ animation:legSwingB .45s ease-in-out infinite; }
-  @keyframes legSwingA{ 0%,100%{ transform:rotate(12deg); } 50%{ transform:rotate(-12deg); } }
-  @keyframes legSwingB{ 0%,100%{ transform:rotate(-12deg); } 50%{ transform:rotate(12deg); } }
+  /* two-frame trot cycle: legs stretched vs. gathered, cross-fading */
+  .legs-a{ animation:frameA .42s steps(1,end) infinite; }
+  .legs-b{ animation:frameB .42s steps(1,end) infinite; }
+  .rump, .tail{ opacity:.96; }
   .fa-caption{
     position:relative; z-index:2; margin-top:auto;
     font-family:'Playfair Display',serif; font-style:italic;
     color:var(--forest-deep); font-size:1.05rem;
   }
   @media (prefers-reduced-motion: reduce){
-    .bird-fly, .bird-fly svg, .deer-track, .deer-bounce, .legA, .legB{ animation:none !important; }
+    .bird-fly, .bird-svg, .wing-up, .wing-down, .deer-track, .deer-svg, .legs-a, .legs-b{ animation:none !important; }
+    .wing-up{ opacity:1; } .wing-down{ opacity:0; }
+    .legs-a{ opacity:1; } .legs-b{ opacity:0; }
   }
 
   /* ---------- 6. CLOSING ---------- */
@@ -507,45 +512,130 @@
     <svg viewBox="0 0 60 90"><rect class="fa-trunk" x="26" y="46" width="8" height="44"/><circle class="fa-foliage" cx="30" cy="34" r="34"/></svg>
   </div>
 
-  <span class="bird-fly" style="top:12%; animation-duration:11s; animation-delay:0s;">
-    <svg viewBox="0 0 40 20"><path d="M2 14C8 4 14 4 20 10C26 4 32 4 38 14" stroke="#2b3a55" stroke-width="3.4" fill="none" stroke-linecap="round"/></svg>
+  <span class="bird-fly" style="top:10%; animation-duration:12s; animation-delay:0s;">
+    <svg class="bird-svg" viewBox="0 0 100 60">
+      <defs><linearGradient id="birdG1" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#3a4a68"/><stop offset="1" stop-color="#232f47"/>
+      </linearGradient></defs>
+      <path d="M6,34 L20,29 L21,38 L6,44 Z" fill="#232f47"/>
+      <ellipse cx="44" cy="31" rx="23" ry="9.5" fill="url(#birdG1)"/>
+      <circle cx="70" cy="23" r="8" fill="url(#birdG1)"/>
+      <path d="M77,23 L88,20 L77,27 Z" fill="#d98a3a"/>
+      <circle cx="72" cy="21" r="1.3" fill="#0d1320"/>
+      <g class="wing wing-up">
+        <path d="M42,29 C50,10 63,3 61,1 C54,8 42,17 32,25 C35,27 38,28 42,29 Z" fill="url(#birdG1)"/>
+      </g>
+      <g class="wing wing-down">
+        <path d="M42,33 C49,46 60,54 58,56 C51,48 40,42 30,36 C34,35 38,34 42,33 Z" fill="url(#birdG1)"/>
+      </g>
+    </svg>
   </span>
-  <span class="bird-fly" style="top:20%; animation-duration:8.5s; animation-delay:1.4s;">
-    <svg viewBox="0 0 40 20"><path d="M2 14C8 4 14 4 20 10C26 4 32 4 38 14" stroke="#3f5678" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <span class="bird-fly" style="top:19%; animation-duration:9s; animation-delay:1.6s;">
+    <svg class="bird-svg" viewBox="0 0 100 60">
+      <defs><linearGradient id="birdG2" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#4a5f82"/><stop offset="1" stop-color="#2e3c5a"/>
+      </linearGradient></defs>
+      <path d="M6,34 L20,29 L21,38 L6,44 Z" fill="#2e3c5a"/>
+      <ellipse cx="44" cy="31" rx="23" ry="9.5" fill="url(#birdG2)"/>
+      <circle cx="70" cy="23" r="8" fill="url(#birdG2)"/>
+      <path d="M77,23 L88,20 L77,27 Z" fill="#d98a3a"/>
+      <circle cx="72" cy="21" r="1.3" fill="#0d1320"/>
+      <g class="wing wing-up"><path d="M42,29 C50,10 63,3 61,1 C54,8 42,17 32,25 C35,27 38,28 42,29 Z" fill="url(#birdG2)"/></g>
+      <g class="wing wing-down"><path d="M42,33 C49,46 60,54 58,56 C51,48 40,42 30,36 C34,35 38,34 42,33 Z" fill="url(#birdG2)"/></g>
+    </svg>
   </span>
-  <span class="bird-fly" style="top:8%; animation-duration:13s; animation-delay:3.2s;">
-    <svg viewBox="0 0 40 20"><path d="M2 14C8 4 14 4 20 10C26 4 32 4 38 14" stroke="#2b3a55" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  <span class="bird-fly" style="top:6%; animation-duration:14s; animation-delay:3.6s;">
+    <svg class="bird-svg" viewBox="0 0 100 60">
+      <defs><linearGradient id="birdG3" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#3a4a68"/><stop offset="1" stop-color="#202b42"/>
+      </linearGradient></defs>
+      <path d="M6,34 L20,29 L21,38 L6,44 Z" fill="#202b42"/>
+      <ellipse cx="44" cy="31" rx="23" ry="9.5" fill="url(#birdG3)"/>
+      <circle cx="70" cy="23" r="8" fill="url(#birdG3)"/>
+      <path d="M77,23 L88,20 L77,27 Z" fill="#d98a3a"/>
+      <circle cx="72" cy="21" r="1.3" fill="#0d1320"/>
+      <g class="wing wing-up"><path d="M42,29 C50,10 63,3 61,1 C54,8 42,17 32,25 C35,27 38,28 42,29 Z" fill="url(#birdG3)"/></g>
+      <g class="wing wing-down"><path d="M42,33 C49,46 60,54 58,56 C51,48 40,42 30,36 C34,35 38,34 42,33 Z" fill="url(#birdG3)"/></g>
+    </svg>
   </span>
-  <span class="bird-fly" style="top:26%; animation-duration:9.5s; animation-delay:5s;">
-    <svg viewBox="0 0 40 20"><path d="M2 14C8 4 14 4 20 10C26 4 32 4 38 14" stroke="#4a6284" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>
+  <span class="bird-fly" style="top:24%; animation-duration:10.5s; animation-delay:5.4s;">
+    <svg class="bird-svg" viewBox="0 0 100 60">
+      <defs><linearGradient id="birdG4" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#5a6f92"/><stop offset="1" stop-color="#37476a"/>
+      </linearGradient></defs>
+      <path d="M6,34 L20,29 L21,38 L6,44 Z" fill="#37476a"/>
+      <ellipse cx="44" cy="31" rx="20" ry="8.2" fill="url(#birdG4)"/>
+      <circle cx="66" cy="24" r="7" fill="url(#birdG4)"/>
+      <path d="M72,24 L82,21 L72,27 Z" fill="#d98a3a"/>
+      <circle cx="68" cy="22" r="1.1" fill="#0d1320"/>
+      <g class="wing wing-up"><path d="M40,29 C47,12 58,5 56,3 C50,9 40,17 31,24 C34,26 37,27 40,29 Z" fill="url(#birdG4)"/></g>
+      <g class="wing wing-down"><path d="M40,33 C46,44 56,51 54,53 C48,46 38,41 29,35 C33,34 36,33 40,33 Z" fill="url(#birdG4)"/></g>
+    </svg>
   </span>
 
   <div class="fa-ground"></div>
 
   <div class="deer-track" style="animation-duration:13s; animation-delay:.4s;">
-    <svg class="deer-bounce" viewBox="0 0 120 80">
-      <ellipse cx="58" cy="42" rx="30" ry="16" fill="#a9713c"/>
-      <circle cx="92" cy="24" r="12" fill="#a9713c"/>
-      <path d="M88 14c-2-6 2-10 6-10" stroke="#7a4b23" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <path d="M96 14c2-6 6-8 9-6" stroke="#7a4b23" stroke-width="3" fill="none" stroke-linecap="round"/>
-      <ellipse cx="99" cy="26" rx="4" ry="6" fill="#8a5a2c"/>
-      <ellipse cx="26" cy="36" rx="8" ry="5" fill="#8a5a2c"/>
-      <circle cx="97" cy="22" r="1.6" fill="#241407"/>
-      <g class="legA"><rect x="42" y="46" width="7" height="28" rx="3" fill="#7a4b23"/><rect x="80" y="46" width="7" height="28" rx="3" fill="#7a4b23"/></g>
-      <g class="legB"><rect x="56" y="46" width="7" height="28" rx="3" fill="#5c3a1a"/><rect x="94" y="46" width="7" height="28" rx="3" fill="#5c3a1a"/></g>
+    <svg class="deer-svg" viewBox="0 0 200 120">
+      <defs>
+        <linearGradient id="deerG1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#8a5a2c"/><stop offset="1" stop-color="#c99150"/>
+        </linearGradient>
+      </defs>
+      <ellipse class="rump" cx="55" cy="52" rx="13" ry="15" fill="#f3e6c8"/>
+      <ellipse cx="95" cy="55" rx="42" ry="22" fill="url(#deerG1)"/>
+      <path d="M118,42 C128,28 137,19 148,14 L157,23 C148,29 137,38 127,48 Z" fill="url(#deerG1)"/>
+      <ellipse cx="158" cy="18" rx="14" ry="10" fill="url(#deerG1)"/>
+      <path d="M170,16 L183,13 L172,25 Z" fill="#6b4226"/>
+      <ellipse cx="149" cy="6" rx="4.5" ry="9" fill="#6b4226" transform="rotate(-24 149 6)"/>
+      <circle cx="164" cy="14" r="1.7" fill="#241407"/>
+      <ellipse class="tail" cx="53" cy="40" rx="5" ry="7" fill="#6b4226"/>
+
+      <g class="legs legs-a">
+        <path d="M132,66 L146,84 L153,106" stroke="#6b4226" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+        <path d="M124,68 L127,89 L124,108" stroke="#5c3a1a" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <path d="M70,66 L57,83 L44,100" stroke="#6b4226" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+        <path d="M78,68 L74,89 L71,108" stroke="#5c3a1a" stroke-width="7" stroke-linecap="round" fill="none"/>
+      </g>
+      <g class="legs legs-b">
+        <path d="M132,66 L126,87 L129,108" stroke="#6b4226" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+        <path d="M124,68 L120,89 L123,108" stroke="#5c3a1a" stroke-width="7" stroke-linecap="round" fill="none"/>
+        <path d="M70,66 L77,87 L75,108" stroke="#6b4226" stroke-width="7.5" stroke-linecap="round" fill="none"/>
+        <path d="M78,68 L83,89 L81,108" stroke="#5c3a1a" stroke-width="7" stroke-linecap="round" fill="none"/>
+      </g>
     </svg>
   </div>
 
   <div class="deer-track fawn" style="animation-duration:15.5s; animation-delay:2.6s;">
-    <svg class="deer-bounce" viewBox="0 0 120 80">
-      <ellipse cx="58" cy="46" rx="22" ry="12" fill="#c98a3d"/>
-      <circle cx="86" cy="30" r="9" fill="#c98a3d"/>
-      <ellipse cx="70" cy="40" rx="3" ry="2.4" fill="#f8ecd2"/>
-      <ellipse cx="50" cy="42" rx="3" ry="2.4" fill="#f8ecd2"/>
-      <ellipse cx="20" cy="42" rx="6" ry="4" fill="#a9713c"/>
-      <circle cx="90" cy="28" r="1.4" fill="#241407"/>
-      <g class="legA"><rect x="36" y="50" width="5" height="20" rx="2.5" fill="#8a5a2c"/><rect x="70" y="50" width="5" height="20" rx="2.5" fill="#8a5a2c"/></g>
-      <g class="legB"><rect x="48" y="50" width="5" height="20" rx="2.5" fill="#6b4226"/><rect x="82" y="50" width="5" height="20" rx="2.5" fill="#6b4226"/></g>
+    <svg class="deer-svg" viewBox="0 0 200 120">
+      <defs>
+        <linearGradient id="deerG2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#a9713c"/><stop offset="1" stop-color="#e0b476"/>
+        </linearGradient>
+      </defs>
+      <ellipse class="rump" cx="62" cy="58" rx="9" ry="11" fill="#f8ecd2"/>
+      <ellipse cx="92" cy="60" rx="30" ry="16" fill="url(#deerG2)"/>
+      <ellipse cx="100" cy="50" rx="2.6" ry="2" fill="#fbf3df"/>
+      <ellipse cx="82" cy="54" rx="2.6" ry="2" fill="#fbf3df"/>
+      <path d="M110,50 C118,40 124,34 132,30 L138,37 C131,42 123,49 116,55 Z" fill="url(#deerG2)"/>
+      <ellipse cx="140" cy="32" rx="10" ry="7.4" fill="url(#deerG2)"/>
+      <path d="M148,30 L158,28 L149,37 Z" fill="#8a5a2c"/>
+      <ellipse cx="133" cy="22" rx="3.2" ry="6.4" fill="#8a5a2c" transform="rotate(-22 133 22)"/>
+      <circle cx="146" cy="29" r="1.3" fill="#241407"/>
+      <ellipse class="tail" cx="60" cy="49" rx="3.6" ry="5" fill="#8a5a2c"/>
+
+      <g class="legs legs-a">
+        <path d="M118,73 L128,88 L133,104" stroke="#8a5a2c" stroke-width="5.6" stroke-linecap="round" fill="none"/>
+        <path d="M112,75 L114,90 L112,105" stroke="#6b4226" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+        <path d="M66,73 L56,86 L46,100" stroke="#8a5a2c" stroke-width="5.6" stroke-linecap="round" fill="none"/>
+        <path d="M72,75 L69,90 L66,105" stroke="#6b4226" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+      </g>
+      <g class="legs legs-b">
+        <path d="M118,73 L113,89 L116,105" stroke="#8a5a2c" stroke-width="5.6" stroke-linecap="round" fill="none"/>
+        <path d="M112,75 L108,90 L111,105" stroke="#6b4226" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+        <path d="M66,73 L72,89 L70,105" stroke="#8a5a2c" stroke-width="5.6" stroke-linecap="round" fill="none"/>
+        <path d="M72,75 L77,90 L75,105" stroke="#6b4226" stroke-width="5.2" stroke-linecap="round" fill="none"/>
+      </g>
     </svg>
   </div>
 
