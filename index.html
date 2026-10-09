@@ -90,7 +90,7 @@
     text-shadow:0 0 6px rgba(255,214,120,.9), 0 0 16px rgba(255,170,50,.6), 0 2px 2px rgba(60,10,10,.35);
     white-space:nowrap;
     clip-path:inset(-40% 100% -40% 0);
-    transition:clip-path 2.6s cubic-bezier(.22,.7,.2,1);
+    transition:clip-path 3.4s cubic-bezier(.22,.7,.2,1);
   }
   .story.is-live .ribbon-text{
     clip-path:inset(-40% 0 -40% 0);
@@ -120,17 +120,12 @@
     font-weight:700;
     font-size:clamp(16px, 5vw, 25px);
     line-height:1.4;
-    color:var(--apple-dark);
-    text-shadow:0 1px 2px rgba(255,255,255,.5), 0 2px 4px rgba(0,0,0,.2);
+    color:#c42225;
+    text-shadow:0 1px 2px rgba(255,255,255,.55), 0 2px 4px rgba(0,0,0,.2);
     clip-path:inset(-30% 100% -30% 0);
-    transition:clip-path 1.5s cubic-bezier(.22,.7,.2,1);
+    transition:clip-path 2.6s cubic-bezier(.22,.7,.2,1);
   }
-  .story.is-live .line-text{ clip-path:inset(-30% 0 -30% 0); }
-  .story.is-live .l1{ transition-delay:2.8s; }
-  .story.is-live .l2{ transition-delay:3.3s; }
-  .story.is-live .l3{ transition-delay:3.8s; }
-  .story.is-live .l4{ transition-delay:4.3s; }
-  .story.is-live .l5{ transition-delay:4.7s; }
+  .line-text.show{ clip-path:inset(-30% 0 -30% 0); }
   .stage{
     position:absolute; inset:0;
     overflow-y:auto;
@@ -609,6 +604,35 @@
     /* One fixed screen, one background image behind the gate. Nothing
        plays after the book opens yet - stages get added back here as
        new content is designed. */
-    function runStory(){}
+    function runStory(){
+      var ribbon = document.querySelector('.ribbon-text');
+      var lines = Array.prototype.slice.call(document.querySelectorAll('.story .line-text'));
+
+      function revealLines(){
+        var i = 0;
+        function next(){
+          if(i >= lines.length) return;
+          var el = lines[i];
+          el.classList.add('show');
+          el.addEventListener('transitionend', function handler(e){
+            if(e.propertyName !== 'clip-path') return;
+            el.removeEventListener('transitionend', handler);
+            i++;
+            next();
+          });
+        }
+        next();
+      }
+
+      if(ribbon){
+        ribbon.addEventListener('transitionend', function handler(e){
+          if(e.propertyName !== 'clip-path') return;
+          ribbon.removeEventListener('transitionend', handler);
+          revealLines();
+        });
+      } else {
+        revealLines();
+      }
+    }
   })();
 </script>
