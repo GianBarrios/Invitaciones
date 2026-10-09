@@ -64,6 +64,12 @@
     pointer-events:none;
     container-type:inline-size;
   }
+  @media (max-width:700px){
+    .ribbon-wrap{ width:68%; top:9%; }
+  }
+  @media (max-width:420px){
+    .ribbon-wrap{ width:78%; }
+  }
   .ribbon-banner{
     display:block;
     width:100%;
@@ -78,16 +84,16 @@
     display:inline-block;
     text-align:center;
     font-family:'Great Vibes', cursive;
-    font-size:clamp(15px, 15cqw, 27px);
-    line-height:1;
+    font-size:clamp(17px, 18cqw, 31px);
+    line-height:1.3;
     color:#fff3cf;
     text-shadow:0 0 6px rgba(255,214,120,.9), 0 0 16px rgba(255,170,50,.6), 0 2px 2px rgba(60,10,10,.35);
     white-space:nowrap;
-    clip-path:inset(0 100% 0 0);
+    clip-path:inset(-40% 100% -40% 0);
     transition:clip-path 2.6s cubic-bezier(.22,.7,.2,1);
   }
   .story.is-live .ribbon-text{
-    clip-path:inset(0 0 0 0);
+    clip-path:inset(-40% 0 -40% 0);
   }
   .ribbon-butterfly{
     position:absolute;
