@@ -198,6 +198,20 @@
   }
   .final-wrap.show{ opacity:1; transform:translate(-50%,-50%) scale(1); }
   .final-title{ display:block; width:100%; }
+  @media (max-width:700px){
+    .line-text{ font-size:clamp(20px, 7.5vw, 34px); }
+    .photo-wrap{ width:62%; }
+    .date-card{ width:62%; }
+    .address-card{ width:84%; }
+    .final-wrap{ width:86%; }
+  }
+  @media (max-width:420px){
+    .line-text{ font-size:clamp(22px, 8.5vw, 36px); }
+    .photo-wrap{ width:72%; }
+    .date-card{ width:72%; }
+    .address-card{ width:92%; }
+    .final-wrap{ width:92%; }
+  }
   .final-photo{ display:block; width:62%; border-radius:50%; }
   .stage{
     position:absolute; inset:0;
