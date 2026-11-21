@@ -22,4 +22,5 @@ Copia un bloque en `aves.py` y ajusta `mapa`, `ida`, `vuelta`, las zonas, `lugar
 (la cabecera del archivo explica cada campo). Usa `--preview` para revisar el encuadre antes de renderizar.
 
 Las aves son una simulación ilustrativa: las rutas y fechas son aproximadas, no datos de rastreo reales.
+Imágenes de las aves en `imagenes/<clave>.png` (generadas con IA en Canva); se muestran en un medallón circular.
 Mapa: Natural Earth vía world-atlas (ver LICENSE-world-atlas).

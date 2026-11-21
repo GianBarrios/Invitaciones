@@ -287,6 +287,25 @@ def make(key, polys, borders, preview=False):
     f_name, f_sci, f_meta = font("Bold", 54, True), font("Regular", 33), font("Medium", 23)
     f_leg, f_src = font("Medium", 25), font("Medium", 20)
 
+    # ilustración del ave (PNG con fondo transparente en imagenes/<clave>.png)
+    bird_img = bird_shadow = None
+    ip = os.path.join(HERE, "imagenes", f"{key}.png")
+    if os.path.exists(ip):
+        D = 250                                   # medallón circular con aro dorado
+        im = Image.open(ip).convert("RGB")
+        s0 = min(im.size); im = im.crop(((im.width - s0) // 2, (im.height - s0) // 2, (im.width + s0) // 2, (im.height + s0) // 2))
+        im = im.resize((D * 2, D * 2), Image.LANCZOS).filter(ImageFilter.UnsharpMask(2, 60, 2)).resize((D, D), Image.LANCZOS)
+        S = 4
+        m = Image.new("L", (D * S, D * S), 0); ImageDraw.Draw(m).ellipse([0, 0, D * S - 1, D * S - 1], fill=255)
+        m = m.resize((D, D), Image.LANCZOS)
+        bird_img = Image.new("RGBA", (D, D), (0, 0, 0, 0)); bird_img.paste(im, (0, 0), m)
+        ring = Image.new("RGBA", (D * S, D * S), (0, 0, 0, 0))
+        ImageDraw.Draw(ring).ellipse([2 * S, 2 * S, (D - 2) * S, (D - 2) * S], outline=GOLD + (255,), width=5 * S)
+        bird_img.alpha_composite(ring.resize((D, D), Image.LANCZOS))
+        bird_shadow = Image.new("RGBA", (D + 60, D + 60), (0, 0, 0, 0))
+        ImageDraw.Draw(bird_shadow).ellipse([30, 30, D + 30, D + 30], fill=ORANGE + (110,))
+        bird_shadow = bird_shadow.filter(ImageFilter.GaussianBlur(20))
+
     tmp = os.path.join(OUT, f".frames_{key}")
     shutil.rmtree(tmp, ignore_errors=True); os.makedirs(tmp, exist_ok=True)
     n_frames = int(DUR * FPS)
@@ -356,18 +375,31 @@ def make(key, polys, borders, preview=False):
             if m0 <= m < m1: cap = c
         draw_dial(d, 905, 300, m, float(np.interp(m, sim.hero_m, sim.hero_km)), cap, a_in)
 
-        # bloque de especie (abajo a la izquierda)
-        text(d, (60, 1300), ave["nombre"], f_name, WHITE, a_in)
-        text(d, (60, 1366), ave["cientifico"], f_sci, MUTED, a_in)
-        text(d, (60, 1412), ave["ficha"], f_meta, DIM, a_in)
+        # bloque de especie (abajo a la izquierda): ilustración + nombre
+        nx = 60
+        if bird_img is not None:
+            bob = 6 * math.sin(t * 1.6)
+            a_b = ease((t - 0.3) / 0.8)
+            bx, by = 30, int(1205 + bob + (1 - a_b) * 30)
+            sh = bird_shadow.copy(); sh.putalpha(sh.getchannel("A").point(lambda v: int(v * a_b)))
+            ov.alpha_composite(sh, (bx - 30, by - 30))
+            bi = bird_img.copy(); bi.putalpha(bi.getchannel("A").point(lambda v: int(v * a_b)))
+            ov.alpha_composite(bi, (bx, by))
+            nx = 30 + bird_img.width + 10
+        f_n = f_name if d.textlength(ave["nombre"], font=f_name) < W - nx - 60 else font("Bold", 44, True)
+        text(d, (nx, 1290), ave["nombre"], f_n, WHITE, a_in)
+        text(d, (nx, 1356), ave["cientifico"], f_sci, MUTED, a_in)
+        text(d, (nx, 1402), ave["ficha"], f_meta, DIM, a_in)
         # leyenda (abajo a la derecha)
         lx = W - 60
-        text(d, (lx - 40, 1385), "Aves simuladas", f_leg, (215, 215, 210), a_in, "rm")
-        d.ellipse([lx - 18, 1376, lx, 1394], fill=SPARK + (int(255 * a_in),))
-        text(d, (lx - 40, 1425), "Ruta de un ejemplar", f_leg, (215, 215, 210), a_in, "rm")
-        d.line([lx - 26, 1425, lx, 1425], fill=ORANGE + (int(255 * a_in),), width=5)
-        text(d, (60, 1500), ave["firma"], f_src, DIM, a_in, shadow=False)
-        text(d, (W - 60, 1500), ave["fuentes"], f_src, DIM, a_in, "ra", shadow=False)
+        text(d, (lx - 40, 1475), "Aves simuladas", f_leg, (215, 215, 210), a_in, "rm")
+        d.ellipse([lx - 18, 1466, lx, 1484], fill=SPARK + (int(255 * a_in),))
+        text(d, (lx - 40, 1515), "Ruta de un ejemplar", f_leg, (215, 215, 210), a_in, "rm")
+        d.line([lx - 26, 1515, lx, 1515], fill=ORANGE + (int(255 * a_in),), width=5)
+        text(d, (60, 1505), ave["firma"], f_src, DIM, a_in, shadow=False)
+        text(d, (60, 1560), ave["fuentes"], f_src, DIM, a_in, shadow=False)
+        if bird_img is not None:
+            text(d, (60, 1588), "Imagen del ave generada con IA", f_src, DIM, a_in, shadow=False)
         frame = Image.alpha_composite(frame, ov)
 
         # --- cierre ---
