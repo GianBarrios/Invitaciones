@@ -398,8 +398,6 @@ def make(key, polys, borders, preview=False):
         d.line([lx - 26, 1515, lx, 1515], fill=ORANGE + (int(255 * a_in),), width=5)
         text(d, (60, 1505), ave["firma"], f_src, DIM, a_in, shadow=False)
         text(d, (60, 1560), ave["fuentes"], f_src, DIM, a_in, shadow=False)
-        if bird_img is not None:
-            text(d, (60, 1588), "Imagen del ave generada con IA", f_src, DIM, a_in, shadow=False)
         frame = Image.alpha_composite(frame, ov)
 
         # --- cierre ---
